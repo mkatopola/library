@@ -1,16 +1,20 @@
 require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/db');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 const bookRoutes = require('./routes/books');
 const userRoutes = require('./routes/users');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
+app.use(express.json());
 connectDB();
 
-app.get("/", (req, res) => res.send("Library API - CSE341 Project"));
+// Swagger documentation route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(express.json());
+app.get("/", (req, res) => res.send("Library API - CSE341 Project"));
 app.use('/books', bookRoutes);
 app.use('/users', userRoutes);
 
