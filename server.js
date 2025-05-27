@@ -6,9 +6,10 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const passport = require("passport");
 const cors = require("cors");
 const helmet = require("helmet");
+const passport = require("passport");
+require("./config/auth");
 
 const app = express();
 
@@ -61,8 +62,8 @@ app.use(passport.session());
 
 // Routes
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use("/auth", require("./routes/auth"));
-app.use("/books", require("./routes/books"));
+// Add this after session configuration in server.js
+app.use("/auth", require("./routes/auth")); // Mount auth routes under /auth app.use("/books", require("./routes/books"));
 app.use("/users", require("./routes/users"));
 
 app.get("/", (req, res) => res.send("Library API - CSE341 Project"));

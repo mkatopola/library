@@ -1,27 +1,36 @@
-// routes/auth.js
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const passport = require("passport");
+const passport = require('passport');
 
-router.get("/github", passport.authenticate("github"));
+// Proper login endpoint
+router.get('/login', (req, res) => {
+  res.json({ 
+    message: 'Use /auth/github to authenticate with GitHub',
+    authEndpoint: '/auth/github' 
+  });
+});
 
-router.get(
-  "/github/callback",
-  passport.authenticate("github", {
-    failureRedirect: "/api-docs",
-    failureMessage: true
+// Initiate GitHub auth
+router.get('/github', passport.authenticate('github'));
+
+// GitHub callback handler
+router.get('/github/callback',
+  passport.authenticate('github', { 
+    failureRedirect: '/api-docs',
+    failureMessage: true 
   }),
   (req, res) => {
-    res.redirect("/api-docs");
+    res.redirect('/api-docs');
   }
 );
 
-router.get("/logout", (req, res, next) => {
+// Logout handler
+router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
     req.session.destroy((err) => {
-      res.clearCookie("connect.sid");
-      res.json({ message: "Logged out successfully" });
+      res.clearCookie('connect.sid');
+      res.json({ message: 'Logged out successfully' });
     });
   });
 });
