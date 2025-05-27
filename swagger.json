@@ -5,12 +5,6 @@
     "description": "API for managing books and users in a library system",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://cse341-library-api.onrender.com",
-      "description": "Production server"
-    }
-  ],
   "tags": [
     {
       "name": "Books",
