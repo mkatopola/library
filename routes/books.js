@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Book = require('../models/book');
 const { validateBook } = require('../middleware/validate');
+const { ensureAuth } = require('../middleware/auth');
 
 // CREATE
-router.post('/', validateBook, async (req, res, next) => {
+router.post('/', ensureAuth, validateBook, async (req, res, next) => {
   try {
     const book = await Book.create(req.body);
     res.status(201).json(book);
@@ -35,7 +36,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // UPDATE
-router.put('/:id', validateBook, async (req, res, next) => {
+router.put('/:id', ensureAuth, validateBook, async (req, res, next) => {
   try {
     const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!book) return res.status(404).json({ message: 'Book not found' });
@@ -46,7 +47,7 @@ router.put('/:id', validateBook, async (req, res, next) => {
 });
 
 // DELETE
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', ensureAuth, async (req, res, next) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
     if (!book) return res.status(404).json({ message: 'Book not found' });
