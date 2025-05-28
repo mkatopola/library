@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Book = require('../models/Book');
-const { validateBook } = require('../middleware/validate');
-const { ensureAuth } = require('../middleware/auth');
+const Book = require("../models/book");
+const { validateBook } = require("../middleware/validate");
+const { ensureAuth } = require("../middleware/auth");
 
 // CREATE
-router.post('/', ensureAuth, validateBook, async (req, res, next) => {
+router.post("/", ensureAuth, validateBook, async (req, res, next) => {
   try {
     const book = await Book.create(req.body);
     res.status(201).json(book);
@@ -15,7 +15,7 @@ router.post('/', ensureAuth, validateBook, async (req, res, next) => {
 });
 
 // READ ALL
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const books = await Book.find();
     res.json(books);
@@ -25,10 +25,10 @@ router.get('/', async (req, res, next) => {
 });
 
 // READ ONE
-router.get('/:id', async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const book = await Book.findById(req.params.id);
-    if (!book) return res.status(404).json({ message: 'Book not found' });
+    if (!book) return res.status(404).json({ message: "Book not found" });
     res.json(book);
   } catch (err) {
     next(err);
@@ -36,10 +36,13 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // UPDATE
-router.put('/:id', ensureAuth, validateBook, async (req, res, next) => {
+router.put("/:id", ensureAuth, validateBook, async (req, res, next) => {
   try {
-    const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    if (!book) return res.status(404).json({ message: 'Book not found' });
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!book) return res.status(404).json({ message: "Book not found" });
     res.json(book);
   } catch (err) {
     next(err);
@@ -47,15 +50,14 @@ router.put('/:id', ensureAuth, validateBook, async (req, res, next) => {
 });
 
 // DELETE
-router.delete('/:id', ensureAuth, async (req, res, next) => {
+router.delete("/:id", ensureAuth, async (req, res, next) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
-    if (!book) return res.status(404).json({ message: 'Book not found' });
-    res.json({ message: 'Book deleted' });
+    if (!book) return res.status(404).json({ message: "Book not found" });
+    res.json({ message: "Book deleted" });
   } catch (err) {
     next(err);
   }
 });
-
 
 module.exports = router;

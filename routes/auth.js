@@ -13,36 +13,35 @@ router.get(
   })
 );
 
-router.get('/logout', async (req, res) => {
+router.get("/logout", async (req, res) => {
   try {
     const sessionId = req.sessionID;
-    
+
     // Destroy session from store
     await new Promise((resolve, reject) => {
-      req.session.destroy(err => {
+      req.session.destroy((err) => {
         if (err) reject(err);
         else resolve();
       });
     });
 
     // Clear client cookie
-    res.clearCookie('connect.sid', {
-      path: '/',
+    res.clearCookie("connect.sid", {
+      path: "/",
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production'
+      secure: process.env.NODE_ENV === "production"
     });
 
-    res.json({ 
+    res.json({
       success: true,
-      message: 'Logged out successfully' 
+      message: "Logged out successfully"
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Logout failed - Please try again'
+      message: "Logout failed - Please try again"
     });
   }
 });
-
 
 module.exports = router;

@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Member = require('../models/Member');
-const { validateMember } = require('../middleware/validate');
-const { ensureAuth } = require('../middleware/auth');
+const Member = require("../models/member");
+const { validateMember } = require("../middleware/validate");
+const { ensureAuth } = require("../middleware/auth");
 
 // CREATE Member with duplicate checking
-router.post('/', validateMember, async (req, res, next) => {
+router.post("/", validateMember, async (req, res, next) => {
   try {
     const { email } = req.body;
 
@@ -14,8 +14,8 @@ router.post('/', validateMember, async (req, res, next) => {
     if (existingMember) {
       return res.status(409).json({
         success: false,
-        message: 'Email already exists',
-        conflictField: 'email'
+        message: "Email already exists",
+        conflictField: "email"
       });
     }
 
@@ -30,7 +30,7 @@ router.post('/', validateMember, async (req, res, next) => {
 });
 
 // READ ALL
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const members = await Member.find();
     res.json(members);
@@ -40,10 +40,10 @@ router.get('/', async (req, res, next) => {
 });
 
 // READ ONE
-router.get('/:id', async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const member = await Member.findById(req.params.id);
-    if (!member) return res.status(404).json({ message: 'Member not found' });
+    if (!member) return res.status(404).json({ message: "Member not found" });
     res.json(member);
   } catch (err) {
     next(err);
@@ -51,10 +51,13 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // UPDATE Member
-router.put('/:id', ensureAuth, validateMember, async (req, res, next) => {
+router.put("/:id", ensureAuth, validateMember, async (req, res, next) => {
   try {
-    const member = await Member.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    if (!member) return res.status(404).json({ message: 'Member not found' });
+    const member = await Member.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!member) return res.status(404).json({ message: "Member not found" });
     res.json(member);
   } catch (err) {
     next(err);
@@ -62,11 +65,11 @@ router.put('/:id', ensureAuth, validateMember, async (req, res, next) => {
 });
 
 // DELETE Member
-router.delete('/:id', ensureAuth, async (req, res, next) => {
+router.delete("/:id", ensureAuth, async (req, res, next) => {
   try {
     const member = await Member.findByIdAndDelete(req.params.id);
-    if (!member) return res.status(404).json({ message: 'Member not found' });
-    res.json({ message: 'Member deleted' });
+    if (!member) return res.status(404).json({ message: "Member not found" });
+    res.json({ message: "Member deleted" });
   } catch (err) {
     next(err);
   }
