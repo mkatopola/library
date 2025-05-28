@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Library Management API",
-    "description": "API for managing books and users in a library system",
+    "description": "API for managing books and library members",
     "version": "1.0.0"
   },
   "tags": [
@@ -11,42 +11,35 @@
       "description": "Book management endpoints"
     },
     {
-      "name": "Users",
-      "description": "User management endpoints"
+      "name": "Members",
+      "description": "Library member management"
     }
   ],
   "paths": {
     "/books": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Create a new book",
-        "description": "Add a new book to the library",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Book"
-              },
-              "examples": {
-                "sampleBook": {
-                  "value": {
-                    "title": "The Great Gatsby",
-                    "author": "F. Scott Fitzgerald",
-                    "ISBN": "9780743273565",
-                    "genre": "Classic",
-                    "publicationYear": 1925,
-                    "pageCount": 218,
-                    "availability": true
-                  }
-                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Book created successfully",
+            "description": "Book created",
             "content": {
               "application/json": {
                 "schema": {
@@ -56,34 +49,21 @@
             }
           },
           "400": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "validationError": {
-                    "value": {
-                      "errors": [
-                        {
-                          "msg": "Title is required",
-                          "param": "title",
-                          "location": "body"
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       },
       "get": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Get all books",
-        "description": "Retrieve a list of all books in the library",
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -101,186 +81,122 @@
     "/books/{id}": {
       "parameters": [
         {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/ResourceId"
         }
       ],
       "get": {
-        "tags": ["Books"],
-        "summary": "Get a book by ID",
-        "description": "Retrieve a single book by its ID",
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get book details",
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Book"
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulOperation"
           },
           "404": {
-            "description": "Book not found",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "notFound": {
-                    "value": {
-                      "message": "Book not found"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
       "put": {
-        "tags": ["Books"],
-        "summary": "Update a book",
-        "description": "Update an existing book by ID",
+        "tags": [
+          "Books"
+        ],
+        "summary": "Update book",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Book"
-              },
-              "examples": {
-                "updateExample": {
-                  "value": {
-                    "title": "Updated Book Title",
-                    "author": "Updated Author Name",
-                    "ISBN": "9781234567890",
-                    "genre": "Updated Genre",
-                    "publicationYear": 2023,
-                    "pageCount": 300,
-                    "availability": false
-                  }
-                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Book updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Book"
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulOperation"
           },
           "400": {
-            "description": "Validation error"
+            "$ref": "#/components/responses/ValidationError"
           },
           "404": {
-            "description": "Book not found"
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
       "delete": {
-        "tags": ["Books"],
-        "summary": "Delete a book",
-        "description": "Delete a book by ID",
+        "tags": [
+          "Books"
+        ],
+        "summary": "Delete book",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Book deleted successfully",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "deleteSuccess": {
-                    "value": {
-                      "message": "Book deleted"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/DeleteSuccess"
           },
           "404": {
-            "description": "Book not found"
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }
     },
-    "/users": {
+    "/members": {
       "post": {
-        "tags": ["Users"],
-        "summary": "Create a new user",
-        "description": "Add a new user to the system",
+        "tags": [
+          "Members"
+        ],
+        "summary": "Add new member",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "sampleUser": {
-                  "value": {
-                    "firstname": "John",
-                    "lastname": "Doe",
-                    "email": "john.doe@example.com"
-                  }
-                }
+                "$ref": "#/components/schemas/Member"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "User created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/Member"
                 }
               }
             }
           },
           "400": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "validationError": {
-                    "value": {
-                      "errors": [
-                        {
-                          "msg": "Email must be valid",
-                          "param": "email",
-                          "location": "body"
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/ValidationError"
           }
         }
       },
       "get": {
-        "tags": ["Users"],
-        "summary": "Get all users",
-        "description": "Retrieve a list of all users",
+        "tags": [
+          "Members"
+        ],
+        "summary": "List all members",
         "responses": {
           "200": {
-            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/Member"
                   }
                 }
               }
@@ -289,111 +205,73 @@
         }
       }
     },
-    "/users/{id}": {
+    "/members/{id}": {
       "parameters": [
         {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/ResourceId"
         }
       ],
       "get": {
-        "tags": ["Users"],
-        "summary": "Get a user by ID",
-        "description": "Retrieve a single user by their ID",
+        "tags": [
+          "Members"
+        ],
+        "summary": "Get member details",
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulOperation"
           },
           "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "notFound": {
-                    "value": {
-                      "message": "User not found"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
       "put": {
-        "tags": ["Users"],
-        "summary": "Update a user",
-        "description": "Update an existing user by ID",
+        "tags": [
+          "Members"
+        ],
+        "summary": "Update member",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "updateExample": {
-                  "value": {
-                    "firstname": "UpdatedFirstName",
-                    "lastname": "UpdatedLastName",
-                    "email": "updated.email@example.com"
-                  }
-                }
+                "$ref": "#/components/schemas/Member"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "User updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulOperation"
           },
           "400": {
-            "description": "Validation error"
+            "$ref": "#/components/responses/ValidationError"
           },
           "404": {
-            "description": "User not found"
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
       "delete": {
-        "tags": ["Users"],
-        "summary": "Delete a user",
-        "description": "Delete a user by ID",
+        "tags": [
+          "Members"
+        ],
+        "summary": "Remove member",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "User deleted successfully",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "deleteSuccess": {
-                    "value": {
-                      "message": "User deleted"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/DeleteSuccess"
           },
           "404": {
-            "description": "User not found"
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }
@@ -404,38 +282,181 @@
       "Book": {
         "type": "object",
         "properties": {
-          "title": { "type": "string" },
-          "author": { "type": "string" },
-          "ISBN": { "type": "string" },
-          "genre": { "type": "string" },
-          "publicationYear": { "type": "number" },
-          "pageCount": { "type": "number" },
-          "availability": { "type": "boolean" }
+          "title": {
+            "type": "string",
+            "example": "The Great Gatsby"
+          },
+          "author": {
+            "type": "string",
+            "example": "F. Scott Fitzgerald"
+          },
+          "ISBN": {
+            "type": "string",
+            "example": "9780743273565"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Classic"
+          },
+          "publicationYear": {
+            "type": "integer",
+            "example": 1925
+          },
+          "pageCount": {
+            "type": "integer",
+            "example": 218
+          },
+          "availability": {
+            "type": "boolean",
+            "example": true
+          }
         },
-        "required": ["title", "author", "ISBN"],
-        "example": {
-          "title": "Sample Book Title",
-          "author": "Sample Author",
-          "ISBN": "9781234567890",
-          "genre": "Fiction",
-          "publicationYear": 2023,
-          "pageCount": 300,
-          "availability": true
-        }
+        "required": [
+          "title",
+          "author",
+          "ISBN"
+        ]
       },
-      "User": {
+      "Member": {
         "type": "object",
         "properties": {
-          "firstname": { "type": "string" },
-          "lastname": { "type": "string" },
-          "email": { "type": "string", "format": "email" }
+          "firstname": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john.doe@example.com"
+          }
         },
-        "required": ["firstname", "lastname", "email"],
-        "example": {
-          "firstname": "Jane",
-          "lastname": "Smith",
-          "email": "jane.smith@example.com"
+        "required": [
+          "firstname",
+          "lastname",
+          "email"
+        ]
+      }
+    },
+    "parameters": {
+      "ResourceId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "MongoDB ObjectID"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Authentication required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "message": "Unauthorized - Please login first"
+              }
+            }
+          }
         }
+      },
+      "ValidationError": {
+        "description": "Invalid request data",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "msg": {
+                        "type": "string"
+                      },
+                      "param": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "message": "Book not found"
+              }
+            }
+          }
+        }
+      },
+      "DeleteSuccess": {
+        "description": "Resource deleted",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "message": "Book deleted successfully"
+              }
+            }
+          }
+        }
+      },
+      "SuccessfulOperation": {
+        "description": "Operation completed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Book"
+                },
+                {
+                  "$ref": "#/components/schemas/Member"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "sessionAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "connect.sid",
+        "description": "Session cookie authentication"
       }
     }
   }

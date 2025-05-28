@@ -1,9 +1,13 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
+// middleware/validate.js
 exports.validateBook = [
-  body('title').notEmpty().withMessage('Title is required'),
-  body('author').notEmpty().withMessage('Author is required'),
-  body('ISBN').isISBN().withMessage('Invalid ISBN'),
+  body("title").trim().notEmpty().withMessage("Title is required"),
+
+  body("author").trim().notEmpty().withMessage("Author is required"),
+
+  body("ISBN").trim().isISBN(13).withMessage("Invalid ISBN-13 format"),
+
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -13,10 +17,10 @@ exports.validateBook = [
   }
 ];
 
-exports.validateUser = [
-  body('firstname').notEmpty(),
-  body('lastname').notEmpty(),
-  body('email').isEmail(),
+exports.validateMember = [
+  body("firstname").notEmpty(),
+  body("lastname").notEmpty(),
+  body("email").isEmail(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

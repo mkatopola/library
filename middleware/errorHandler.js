@@ -1,12 +1,26 @@
 module.exports = (err, req, res, next) => {
   console.error(err);
-  if (err.name === 'ValidationError') {
-    // Mongoose validation error
-    return res.status(400).json({ message: err.message });
+
+  if (err.name === "ValidationError") {
+    const messages = Object.values(err.errors).map((val) => val.message);
+    return res.status(400).json({
+      success: false,
+      message: "Validation error",
+      errors: messages
+    });
   }
+
   if (err.code === 11000) {
-    // duplicate key
-    return res.status(400).json({ message: 'Duplicate field value entered' });
+    const field = Object.keys(err.keyPattern)[0];
+    return res.status(409).json({
+      success: false,
+      message: `Duplicate ${field} entered`,
+      field: field
+    });
   }
-  res.status(500).json({ message: 'Server Error' });
+
+  res.status(500).json({
+    success: false,
+    message: "Server Error"
+  });
 };

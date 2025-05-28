@@ -1,4 +1,3 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
@@ -9,24 +8,11 @@ const MongoStore = require("connect-mongo");
 const cors = require("cors");
 const helmet = require("helmet");
 const passport = require("passport");
-require("./config/auth");
+const initializePassport = require("./config/auth");
 
 const app = express();
 
-// Environment validation
-const requiredEnvVars = [
-  "MONGODB_URI",
-  "SESSION_SECRET",
-  "GITHUB_CLIENT_ID",
-  "GITHUB_CLIENT_SECRET",
-  "GITHUB_CALLBACK_URL"
-];
-requiredEnvVars.forEach((varName) => {
-  if (!process.env[varName]) {
-    throw new Error(`${varName} environment variable is required`);
-  }
-});
-
+// Connect to MongoDB
 connectDB();
 
 // Security middleware
@@ -37,21 +23,25 @@ app.use(
     credentials: true
   })
 );
+app.use(express.json());
 
 // Session configuration
 app.use(
   session({
+    name: "library.sid",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
-      collectionName: "sessions"
+      collectionName: "sessions",
+      ttl: 60 * 60 // 1 hour - cleanup expired sessions
     }),
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      maxAge: null, //(cookie will be deleted when the browser is closed)
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax"
+      sameSite: "lax",
+      httpOnly: true
     }
   })
 );
@@ -59,12 +49,55 @@ app.use(
 // Passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
+initializePassport(passport);
+
+// Session validation middleware
+app.use((req, res, next) => {
+  // Allow GET requests and authentication flow without validation
+  if (
+    req.method === "GET" ||
+    req.path === "/login" ||
+    req.path === "/github/callback" ||
+    req.path === "/api-docs"
+  ) {
+    return next();
+  }
+
+  // Validate session for write operations (POST/PUT/DELETE)
+  if (req.sessionID) {
+    req.sessionStore.get(req.sessionID, (err, session) => {
+      if (err || !session) {
+        res.clearCookie("library.sid");
+        return res.status(401).json({
+          success: false,
+          message: "Session expired - Please log in"
+        });
+      }
+
+      if (!session.passport?.user) {
+        res.clearCookie("library.sid");
+        return res.status(401).json({
+          success: false,
+          message: "Invalid session - Please reauthenticate"
+        });
+      }
+
+      req.session.touch();
+      next();
+    });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: "Authentication required for this operation"
+    });
+  }
+});
 
 // Routes
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-// Add this after session configuration in server.js
-app.use("/auth", require("./routes/auth")); // Mount auth routes under /auth app.use("/books", require("./routes/books"));
-app.use("/users", require("./routes/users"));
+app.use("/", require("./routes/auth"));
+app.use("/books", require("./routes/books"));
+app.use("/members", require("./routes/members"));
 
 app.get("/", (req, res) => res.send("Library API - CSE341 Project"));
 

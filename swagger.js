@@ -1,50 +1,94 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require("swagger-autogen")();
 
-const outputFile = './swagger.json';
-const endpointsFiles = ['./routes/books.js', './routes/users.js'];
+const outputFile = "./swagger.json";
+const endpointsFiles = ["./routes/books.js", "./routes/members.js"]; // Changed from users.js to members.js
 
 const doc = {
-  swagger: '2.0',
+  openapi: "3.0.0",
   info: {
-    title: 'Library Management API',
-    description: 'API for managing books and users in a library system',
-    version: '1.0.0'
+    title: "Library Management API",
+    description: "API for managing books and library members",
+    version: "1.0.0"
   },
-  host: process.env.HOST || 'localhost:3000',
-  basePath: '/',
-  schemes: ['http', 'https'],
-  consumes: ['application/json'],
-  produces: ['application/json'],
+  servers: [
+    {
+      url: process.env.HOST || "http://localhost:3000",
+      description: "Development server"
+    }
+  ],
   tags: [
-    { name: 'Books', description: 'Book management endpoints' },
-    { name: 'Users', description: 'User management endpoints' }
+    {
+      name: "Books",
+      description: "Book management endpoints"
+    },
+    {
+      name: "Members",
+      description: "Library member management"
+    }
   ],
   components: {
     schemas: {
       Book: {
-        type: 'object',
+        type: "object",
         properties: {
-          title: { type: 'string' },
-          author: { type: 'string' },
-          ISBN: { type: 'string' },
-          genre: { type: 'string' },
-          publicationYear: { type: 'number' },
-          pageCount: { type: 'number' },
-          availability: { type: 'boolean' }
+          title: { type: "string", example: "The Great Gatsby" },
+          author: { type: "string", example: "F. Scott Fitzgerald" },
+          ISBN: { type: "string", example: "9780743273565" },
+          genre: { type: "string", example: "Classic" },
+          publicationYear: { type: "integer", example: 1925 },
+          pageCount: { type: "integer", example: 218 },
+          availability: { type: "boolean", example: true }
         },
-        required: ['title', 'author', 'ISBN']
+        required: ["title", "author", "ISBN"]
       },
-      User: {
-        type: 'object',
+      Member: {
+        // Changed from User to Member
+        type: "object",
         properties: {
-          firstname: { type: 'string' },
-          lastname: { type: 'string' },
-          email: { type: 'string' }
+          firstname: { type: "string", example: "John" },
+          lastname: { type: "string", example: "Doe" },
+          email: {
+            type: "string",
+            format: "email",
+            example: "john@example.com"
+          },
+          membershipDate: { type: "string", format: "date-time" }
         },
-        required: ['firstname', 'lastname', 'email']
+        required: ["firstname", "lastname", "email"]
+      }
+    },
+    securitySchemes: {
+      sessionAuth: {
+        type: "apiKey",
+        in: "cookie",
+        name: "connect.sid",
+        description: "Session cookie authentication"
       }
     }
+  },
+  security: [
+    {
+      sessionAuth: []
+    }
+  ]
+};
+
+// Add route specific security overrides
+doc.paths = {
+  "/books": {
+    get: { security: [] } // Public access
+  },
+  "/books/{id}": {
+    get: { security: [] } // Public access
+  },
+  "/members": {
+    get: { security: [] } // Public access
+  },
+  "/members/{id}": {
+    get: { security: [] } // Public access
   }
 };
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+  console.log("Swagger documentation generated successfully");
+});

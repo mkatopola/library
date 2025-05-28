@@ -1,9 +1,16 @@
-// middleware/auth.js
 exports.ensureAuth = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user) {
     return next();
   }
-  res.status(401).json({
+  
+  // Clear invalid session cookie
+  res.clearCookie('connect.sid', {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production'
+  });
+
+  return res.status(401).json({
     success: false,
     message: "Unauthorized - Please log in first",
     documentation: "/api-docs"
