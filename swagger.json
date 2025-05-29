@@ -37,17 +37,7 @@
             "description": "Book created",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/BookResponse"},
-                "example": {
-                  "_id": "507f1f77bcf86cd799439011",
-                  "title": "To Kill a Mockingbird",
-                  "author": "Harper Lee",
-                  "ISBN": "9780061120084",
-                  "genre": "Fiction",
-                  "publicationYear": 1960,
-                  "pageCount": 336,
-                  "availability": true
-                }
+                "schema": {"$ref": "#/components/schemas/BookResponse"}
               }
             }
           },
@@ -98,9 +88,12 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/BookUpdate"},
+              "schema": {"$ref": "#/components/schemas/BookRequest"},
               "example": {
                 "title": "To Kill a Mockingbird (Updated)",
+                "author": "Harper Lee",
+                "ISBN": "9780061120084",
+                "genre": "Classic Fiction",
                 "availability": false
               }
             }
@@ -203,8 +196,10 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/MemberUpdate"},
+              "schema": {"$ref": "#/components/schemas/MemberRequest"},
               "example": {
+                "firstname": "Jane",
+                "lastname": "Smith",
                 "email": "jane.newemail@example.com"
               }
             }
@@ -254,19 +249,6 @@
         ],
         "required": ["title", "author", "ISBN"]
       },
-      "BookUpdate": {
-        "type": "object",
-        "properties": {
-          "title": {"type": "string"},
-          "author": {"type": "string"},
-          "ISBN": {"type": "string"},
-          "genre": {"type": "string"},
-          "publicationYear": {"type": "integer"},
-          "pageCount": {"type": "integer"},
-          "availability": {"type": "boolean"}
-        },
-        "minProperties": 1
-      },
       "BookResponse": {
         "allOf": [
           {"$ref": "#/components/schemas/BookBase"},
@@ -296,15 +278,6 @@
           {"$ref": "#/components/schemas/MemberBase"}
         ],
         "required": ["firstname", "lastname", "email"]
-      },
-      "MemberUpdate": {
-        "type": "object",
-        "properties": {
-          "firstname": {"type": "string"},
-          "lastname": {"type": "string"},
-          "email": {"type": "string", "format": "email"}
-        },
-        "minProperties": 1
       },
       "MemberResponse": {
         "allOf": [
