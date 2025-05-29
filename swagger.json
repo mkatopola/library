@@ -6,34 +6,20 @@
     "version": "1.0.0"
   },
   "tags": [
-    {
-      "name": "Books",
-      "description": "Book management endpoints"
-    },
-    {
-      "name": "Members",
-      "description": "Library member management"
-    }
+    {"name": "Books", "description": "Book management endpoints"},
+    {"name": "Members", "description": "Library member management"}
   ],
   "paths": {
     "/books": {
       "post": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Create a new book",
-        "security": [
-          {
-            "sessionAuth": []
-          }
-        ],
+        "security": [{"sessionAuth": []}],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Book"
-              }
+              "schema": {"$ref": "#/components/schemas/Book"}
             }
           }
         },
@@ -42,24 +28,16 @@
             "description": "Book created",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Book"
-                }
+                "schema": {"$ref": "#/components/schemas/Book"}
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          }
+          "400": {"$ref": "#/components/responses/ValidationError"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       },
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Get all books",
         "responses": {
           "200": {
@@ -68,9 +46,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Book"
-                  }
+                  "items": {"$ref": "#/components/schemas/Book"}
                 }
               }
             }
@@ -79,125 +55,79 @@
       }
     },
     "/books/{id}": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/ResourceId"
-        }
-      ],
+      "parameters": [{"$ref": "#/components/parameters/ResourceId"}],
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Get book details",
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/SuccessfulOperation"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": {"$ref": "#/components/responses/SuccessfulOperation"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       },
       "put": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Update book",
-        "security": [
-          {
-            "sessionAuth": []
-          }
-        ],
+        "security": [{"sessionAuth": []}],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Book"
-              }
+              "schema": {"$ref": "#/components/schemas/Book"}
             }
           }
         },
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/SuccessfulOperation"
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": {"$ref": "#/components/responses/SuccessfulOperation"},
+          "400": {"$ref": "#/components/responses/ValidationError"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       },
       "delete": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Delete book",
-        "security": [
-          {
-            "sessionAuth": []
-          }
-        ],
+        "security": [{"sessionAuth": []}],
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/DeleteSuccess"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": {"$ref": "#/components/responses/DeleteSuccess"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       }
     },
     "/members": {
       "post": {
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "summary": "Add new member",
-        "security": [
-          {
-            "sessionAuth": []
-          }
-        ],
+        "security": [{"sessionAuth": []}],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Member"
-              }
+              "schema": {"$ref": "#/components/schemas/Member"}
             }
           }
         },
         "responses": {
           "201": {
+            "description": "Member created",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Member"
-                }
+                "schema": {"$ref": "#/components/schemas/Member"}
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          }
+          "400": {"$ref": "#/components/responses/ValidationError"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       },
       "get": {
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "summary": "List all members",
         "responses": {
           "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Member"
-                  }
+                  "items": {"$ref": "#/components/schemas/Member"}
                 }
               }
             }
@@ -206,73 +136,40 @@
       }
     },
     "/members/{id}": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/ResourceId"
-        }
-      ],
+      "parameters": [{"$ref": "#/components/parameters/ResourceId"}],
       "get": {
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "summary": "Get member details",
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/SuccessfulOperation"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": {"$ref": "#/components/responses/SuccessfulOperation"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       },
       "put": {
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "summary": "Update member",
-        "security": [
-          {
-            "sessionAuth": []
-          }
-        ],
+        "security": [{"sessionAuth": []}],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Member"
-              }
+              "schema": {"$ref": "#/components/schemas/Member"}
             }
           }
         },
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/SuccessfulOperation"
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": {"$ref": "#/components/responses/SuccessfulOperation"},
+          "400": {"$ref": "#/components/responses/ValidationError"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       },
       "delete": {
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "summary": "Remove member",
-        "security": [
-          {
-            "sessionAuth": []
-          }
-        ],
+        "security": [{"sessionAuth": []}],
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/DeleteSuccess"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
+          "200": {"$ref": "#/components/responses/DeleteSuccess"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       }
     }
@@ -281,64 +178,25 @@
     "schemas": {
       "Book": {
         "type": "object",
+        "required": ["title", "author", "ISBN"],
         "properties": {
-          "title": {
-            "type": "string",
-            "example": "The Great Gatsby"
-          },
-          "author": {
-            "type": "string",
-            "example": "F. Scott Fitzgerald"
-          },
-          "ISBN": {
-            "type": "string",
-            "example": "9780743273565"
-          },
-          "genre": {
-            "type": "string",
-            "example": "Classic"
-          },
-          "publicationYear": {
-            "type": "integer",
-            "example": 1925
-          },
-          "pageCount": {
-            "type": "integer",
-            "example": 218
-          },
-          "availability": {
-            "type": "boolean",
-            "example": true
-          }
-        },
-        "required": [
-          "title",
-          "author",
-          "ISBN"
-        ]
+          "title": {"type": "string", "example": "The Great Gatsby"},
+          "author": {"type": "string", "example": "F. Scott Fitzgerald"},
+          "ISBN": {"type": "string", "example": "9780743273565"},
+          "genre": {"type": "string", "example": "Classic"},
+          "publicationYear": {"type": "integer", "example": 1925},
+          "pageCount": {"type": "integer", "example": 218},
+          "availability": {"type": "boolean", "example": true}
+        }
       },
       "Member": {
         "type": "object",
+        "required": ["firstname", "lastname", "email"],
         "properties": {
-          "firstname": {
-            "type": "string",
-            "example": "John"
-          },
-          "lastname": {
-            "type": "string",
-            "example": "Doe"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "example": "john.doe@example.com"
-          }
-        },
-        "required": [
-          "firstname",
-          "lastname",
-          "email"
-        ]
+          "firstname": {"type": "string", "example": "John"},
+          "lastname": {"type": "string", "example": "Doe"},
+          "email": {"type": "string", "format": "email", "example": "john@example.com"}
+        }
       }
     },
     "parameters": {
@@ -346,9 +204,7 @@
         "name": "id",
         "in": "path",
         "required": true,
-        "schema": {
-          "type": "string"
-        },
+        "schema": {"type": "string"},
         "description": "MongoDB ObjectID"
       }
     },
@@ -360,13 +216,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "message": {
-                  "type": "string"
-                }
+                "message": {"type": "string"}
               },
-              "example": {
-                "message": "Unauthorized - Please login first"
-              }
+              "example": {"message": "Unauthorized - Please login first"}
             }
           }
         }
@@ -383,12 +235,8 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "msg": {
-                        "type": "string"
-                      },
-                      "param": {
-                        "type": "string"
-                      }
+                      "msg": {"type": "string"},
+                      "param": {"type": "string"}
                     }
                   }
                 }
@@ -404,13 +252,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "message": {
-                  "type": "string"
-                }
+                "message": {"type": "string"}
               },
-              "example": {
-                "message": "Book not found"
-              }
+              "example": {"message": "Resource not found"}
             }
           }
         }
@@ -422,13 +266,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "message": {
-                  "type": "string"
-                }
+                "message": {"type": "string"}
               },
-              "example": {
-                "message": "Book deleted successfully"
-              }
+              "example": {"message": "Resource deleted successfully"}
             }
           }
         }
@@ -439,12 +279,8 @@
           "application/json": {
             "schema": {
               "oneOf": [
-                {
-                  "$ref": "#/components/schemas/Book"
-                },
-                {
-                  "$ref": "#/components/schemas/Member"
-                }
+                {"$ref": "#/components/schemas/Book"},
+                {"$ref": "#/components/schemas/Member"}
               ]
             }
           }
