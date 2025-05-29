@@ -19,7 +19,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Book"},
+              "schema": {"$ref": "#/components/schemas/BookRequest"},
               "example": {
                 "title": "To Kill a Mockingbird",
                 "author": "Harper Lee",
@@ -66,29 +66,7 @@
                 "schema": {
                   "type": "array",
                   "items": {"$ref": "#/components/schemas/BookResponse"}
-                },
-                "example": [
-                  {
-                    "_id": "507f1f77bcf86cd799439011",
-                    "title": "To Kill a Mockingbird",
-                    "author": "Harper Lee",
-                    "ISBN": "9780061120084",
-                    "genre": "Fiction",
-                    "publicationYear": 1960,
-                    "pageCount": 336,
-                    "availability": true
-                  },
-                  {
-                    "_id": "507f191e810c19729de860ea",
-                    "title": "1984",
-                    "author": "George Orwell",
-                    "ISBN": "9780451524935",
-                    "genre": "Dystopian",
-                    "publicationYear": 1949,
-                    "pageCount": 328,
-                    "availability": false
-                  }
-                ]
+                }
               }
             }
           }
@@ -105,17 +83,7 @@
             "description": "Book details",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/BookResponse"},
-                "example": {
-                  "_id": "507f1f77bcf86cd799439011",
-                  "title": "To Kill a Mockingbird",
-                  "author": "Harper Lee",
-                  "ISBN": "9780061120084",
-                  "genre": "Fiction",
-                  "publicationYear": 1960,
-                  "pageCount": 336,
-                  "availability": true
-                }
+                "schema": {"$ref": "#/components/schemas/BookResponse"}
               }
             }
           },
@@ -127,9 +95,10 @@
         "summary": "Update book",
         "security": [{"sessionAuth": []}],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Book"},
+              "schema": {"$ref": "#/components/schemas/BookUpdate"},
               "example": {
                 "title": "To Kill a Mockingbird (Updated)",
                 "availability": false
@@ -142,17 +111,7 @@
             "description": "Book updated",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/BookResponse"},
-                "example": {
-                  "_id": "507f1f77bcf86cd799439011",
-                  "title": "To Kill a Mockingbird (Updated)",
-                  "author": "Harper Lee",
-                  "ISBN": "9780061120084",
-                  "genre": "Fiction",
-                  "publicationYear": 1960,
-                  "pageCount": 336,
-                  "availability": false
-                }
+                "schema": {"$ref": "#/components/schemas/BookResponse"}
               }
             }
           },
@@ -165,9 +124,7 @@
         "summary": "Delete book",
         "security": [{"sessionAuth": []}],
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/DeleteSuccess"
-          },
+          "200": {"$ref": "#/components/responses/DeleteSuccess"},
           "404": {"$ref": "#/components/responses/NotFound"}
         }
       }
@@ -181,7 +138,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Member"},
+              "schema": {"$ref": "#/components/schemas/MemberRequest"},
               "example": {
                 "firstname": "Jane",
                 "lastname": "Smith",
@@ -195,14 +152,7 @@
             "description": "Member created",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/MemberResponse"},
-                "example": {
-                  "_id": "507f191e810c19729de860eb",
-                  "firstname": "Jane",
-                  "lastname": "Smith",
-                  "email": "jane.smith@example.com",
-                  "membershipDate": "2023-10-15T08:30:00.000Z"
-                }
+                "schema": {"$ref": "#/components/schemas/MemberResponse"}
               }
             }
           },
@@ -221,23 +171,7 @@
                 "schema": {
                   "type": "array",
                   "items": {"$ref": "#/components/schemas/MemberResponse"}
-                },
-                "example": [
-                  {
-                    "_id": "507f191e810c19729de860eb",
-                    "firstname": "Jane",
-                    "lastname": "Smith",
-                    "email": "jane.smith@example.com",
-                    "membershipDate": "2023-10-15T08:30:00.000Z"
-                  },
-                  {
-                    "_id": "614451414fabc12345678901",
-                    "firstname": "John",
-                    "lastname": "Doe",
-                    "email": "john.doe@example.com",
-                    "membershipDate": "2023-09-20T14:15:00.000Z"
-                  }
-                ]
+                }
               }
             }
           }
@@ -254,14 +188,7 @@
             "description": "Member details",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/MemberResponse"},
-                "example": {
-                  "_id": "507f191e810c19729de860eb",
-                  "firstname": "Jane",
-                  "lastname": "Smith",
-                  "email": "jane.smith@example.com",
-                  "membershipDate": "2023-10-15T08:30:00.000Z"
-                }
+                "schema": {"$ref": "#/components/schemas/MemberResponse"}
               }
             }
           },
@@ -276,7 +203,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Member"},
+              "schema": {"$ref": "#/components/schemas/MemberUpdate"},
               "example": {
                 "email": "jane.newemail@example.com"
               }
@@ -288,14 +215,7 @@
             "description": "Member updated",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/MemberResponse"},
-                "example": {
-                  "_id": "507f191e810c19729de860eb",
-                  "firstname": "Jane",
-                  "lastname": "Smith",
-                  "email": "jane.newemail@example.com",
-                  "membershipDate": "2023-10-15T08:30:00.000Z"
-                }
+                "schema": {"$ref": "#/components/schemas/MemberResponse"}
               }
             }
           },
@@ -308,9 +228,7 @@
         "summary": "Remove member",
         "security": [{"sessionAuth": []}],
         "responses": {
-          "200": {
-            "$ref": "#/components/responses/DeleteSuccess"
-          },
+          "200": {"$ref": "#/components/responses/DeleteSuccess"},
           "404": {"$ref": "#/components/responses/NotFound"}
         }
       }
@@ -318,50 +236,96 @@
   },
   "components": {
     "schemas": {
-      "Book": {
+      "BookBase": {
         "type": "object",
-        "required": ["title", "author", "ISBN"],
         "properties": {
-          "title": {"type": "string", "example": "To Kill a Mockingbird"},
-          "author": {"type": "string", "example": "Harper Lee"},
-          "ISBN": {"type": "string", "example": "9780061120084"},
-          "genre": {"type": "string", "example": "Fiction"},
-          "publicationYear": {"type": "integer", "example": 1960},
-          "pageCount": {"type": "integer", "example": 336},
-          "availability": {"type": "boolean", "example": true}
+          "title": {"type": "string"},
+          "author": {"type": "string"},
+          "ISBN": {"type": "string"},
+          "genre": {"type": "string"},
+          "publicationYear": {"type": "integer"},
+          "pageCount": {"type": "integer"},
+          "availability": {"type": "boolean"}
         }
+      },
+      "BookRequest": {
+        "allOf": [
+          {"$ref": "#/components/schemas/BookBase"}
+        ],
+        "required": ["title", "author", "ISBN"]
+      },
+      "BookUpdate": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "author": {"type": "string"},
+          "ISBN": {"type": "string"},
+          "genre": {"type": "string"},
+          "publicationYear": {"type": "integer"},
+          "pageCount": {"type": "integer"},
+          "availability": {"type": "boolean"}
+        },
+        "minProperties": 1
       },
       "BookResponse": {
+        "allOf": [
+          {"$ref": "#/components/schemas/BookBase"},
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "readOnly": true,
+                "pattern": "^[0-9a-fA-F]{24}$"
+              }
+            },
+            "required": ["_id"]
+          }
+        ]
+      },
+      "MemberBase": {
         "type": "object",
         "properties": {
-          "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
-          "title": {"type": "string", "example": "To Kill a Mockingbird"},
-          "author": {"type": "string", "example": "Harper Lee"},
-          "ISBN": {"type": "string", "example": "9780061120084"},
-          "genre": {"type": "string", "example": "Fiction"},
-          "publicationYear": {"type": "integer", "example": 1960},
-          "pageCount": {"type": "integer", "example": 336},
-          "availability": {"type": "boolean", "example": true}
+          "firstname": {"type": "string"},
+          "lastname": {"type": "string"},
+          "email": {"type": "string", "format": "email"}
         }
       },
-      "Member": {
+      "MemberRequest": {
+        "allOf": [
+          {"$ref": "#/components/schemas/MemberBase"}
+        ],
+        "required": ["firstname", "lastname", "email"]
+      },
+      "MemberUpdate": {
         "type": "object",
-        "required": ["firstname", "lastname", "email"],
         "properties": {
-          "firstname": {"type": "string", "example": "Jane"},
-          "lastname": {"type": "string", "example": "Smith"},
-          "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"}
-        }
+          "firstname": {"type": "string"},
+          "lastname": {"type": "string"},
+          "email": {"type": "string", "format": "email"}
+        },
+        "minProperties": 1
       },
       "MemberResponse": {
-        "type": "object",
-        "properties": {
-          "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
-          "firstname": {"type": "string", "example": "Jane"},
-          "lastname": {"type": "string", "example": "Smith"},
-          "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
-          "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
-        }
+        "allOf": [
+          {"$ref": "#/components/schemas/MemberBase"},
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "readOnly": true,
+                "pattern": "^[0-9a-fA-F]{24}$"
+              },
+              "membershipDate": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              }
+            },
+            "required": ["_id", "membershipDate"]
+          }
+        ]
       }
     },
     "parameters": {
@@ -369,7 +333,11 @@
         "name": "id",
         "in": "path",
         "required": true,
-        "schema": {"type": "string", "example": "507f1f77bcf86cd799439011"},
+        "schema": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{24}$",
+          "example": "507f1f77bcf86cd799439011"
+        },
         "description": "MongoDB ObjectID"
       }
     },
@@ -409,14 +377,8 @@
             },
             "example": {
               "errors": [
-                {
-                  "msg": "Email must be valid",
-                  "param": "email"
-                },
-                {
-                  "msg": "Title is required",
-                  "param": "title"
-                }
+                {"msg": "Email must be valid", "param": "email"},
+                {"msg": "Title is required", "param": "title"}
               ]
             }
           }
@@ -432,7 +394,7 @@
                 "message": {"type": "string"}
               }
             },
-            "example": {"message": "Book with ID 507f1f77bcf86cd799439011 not found"}
+            "example": {"message": "Resource not found"}
           }
         }
       },
@@ -446,7 +408,7 @@
                 "message": {"type": "string"}
               }
             },
-            "example": {"message": "Book deleted successfully"}
+            "example": {"message": "Resource deleted successfully"}
           }
         }
       }
