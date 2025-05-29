@@ -19,15 +19,18 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Book"},
-              "example": {
-                "title": "To Kill a Mockingbird",
-                "author": "Harper Lee",
-                "ISBN": "9780061120084",
-                "genre": "Fiction",
-                "publicationYear": 1960,
-                "pageCount": 336,
-                "availability": true
+              "schema": {
+                "type": "object",
+                "required": ["title", "author", "ISBN"],
+                "properties": {
+                  "title": {"type": "string", "example": "To Kill a Mockingbird"},
+                  "author": {"type": "string", "example": "Harper Lee"},
+                  "ISBN": {"type": "string", "example": "9780061120084"},
+                  "genre": {"type": "string", "example": "Fiction"},
+                  "publicationYear": {"type": "integer", "example": 1960},
+                  "pageCount": {"type": "integer", "example": 336},
+                  "availability": {"type": "boolean", "example": true}
+                }
               }
             }
           }
@@ -37,12 +40,24 @@
             "description": "Book created",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Book"}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
+                    "title": {"type": "string", "example": "To Kill a Mockingbird"},
+                    "author": {"type": "string", "example": "Harper Lee"},
+                    "ISBN": {"type": "string", "example": "9780061120084"},
+                    "genre": {"type": "string", "example": "Fiction"},
+                    "publicationYear": {"type": "integer", "example": 1960},
+                    "pageCount": {"type": "integer", "example": 336},
+                    "availability": {"type": "boolean", "example": true}
+                  }
+                }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/ValidationError"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {"$ref": "#/components/responses/400Validation"},
+          "401": {"$ref": "#/components/responses/401Unauthorized"}
         }
       },
       "get": {
@@ -55,7 +70,19 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {"$ref": "#/components/schemas/Book"}
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
+                      "title": {"type": "string", "example": "To Kill a Mockingbird"},
+                      "author": {"type": "string", "example": "Harper Lee"},
+                      "ISBN": {"type": "string", "example": "9780061120084"},
+                      "genre": {"type": "string", "example": "Fiction"},
+                      "publicationYear": {"type": "integer", "example": 1960},
+                      "pageCount": {"type": "integer", "example": 336},
+                      "availability": {"type": "boolean", "example": true}
+                    }
+                  }
                 }
               }
             }
@@ -64,7 +91,18 @@
       }
     },
     "/books/{id}": {
-      "parameters": [{"$ref": "#/components/parameters/ResourceId"}],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "description": "MongoDB ObjectID"
+        }
+      ],
       "get": {
         "tags": ["Books"],
         "summary": "Get book details",
@@ -73,11 +111,23 @@
             "description": "Book details",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Book"}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
+                    "title": {"type": "string", "example": "To Kill a Mockingbird"},
+                    "author": {"type": "string", "example": "Harper Lee"},
+                    "ISBN": {"type": "string", "example": "9780061120084"},
+                    "genre": {"type": "string", "example": "Fiction"},
+                    "publicationYear": {"type": "integer", "example": 1960},
+                    "pageCount": {"type": "integer", "example": 336},
+                    "availability": {"type": "boolean", "example": true}
+                  }
+                }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"}
+          "404": {"$ref": "#/components/responses/404NotFound"}
         }
       },
       "put": {
@@ -88,15 +138,17 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Book"},
-              "example": {
-                "title": "To Kill a Mockingbird (Updated)",
-                "author": "Harper Lee",
-                "ISBN": "9780061120084",
-                "genre": "Classic Fiction",
-                "publicationYear": 1960,
-                "pageCount": 336,
-                "availability": false
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {"type": "string", "example": "To Kill a Mockingbird (Updated)"},
+                  "author": {"type": "string", "example": "Harper Lee"},
+                  "ISBN": {"type": "string", "example": "9780061120084"},
+                  "genre": {"type": "string", "example": "Classic Fiction"},
+                  "publicationYear": {"type": "integer", "example": 1960},
+                  "pageCount": {"type": "integer", "example": 336},
+                  "availability": {"type": "boolean", "example": false}
+                }
               }
             }
           }
@@ -106,12 +158,24 @@
             "description": "Book updated",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Book"}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
+                    "title": {"type": "string", "example": "To Kill a Mockingbird (Updated)"},
+                    "author": {"type": "string", "example": "Harper Lee"},
+                    "ISBN": {"type": "string", "example": "9780061120084"},
+                    "genre": {"type": "string", "example": "Fiction"},
+                    "publicationYear": {"type": "integer", "example": 1960},
+                    "pageCount": {"type": "integer", "example": 336},
+                    "availability": {"type": "boolean", "example": false}
+                  }
+                }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/ValidationError"},
-          "404": {"$ref": "#/components/responses/NotFound"}
+          "400": {"$ref": "#/components/responses/400Validation"},
+          "404": {"$ref": "#/components/responses/404NotFound"}
         }
       },
       "delete": {
@@ -119,8 +183,20 @@
         "summary": "Delete book",
         "security": [{"sessionAuth": []}],
         "responses": {
-          "200": {"$ref": "#/components/responses/DeleteSuccess"},
-          "404": {"$ref": "#/components/responses/NotFound"}
+          "200": {
+            "description": "Book deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/404NotFound"}
         }
       }
     },
@@ -133,11 +209,14 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Member"},
-              "example": {
-                "firstname": "Jane",
-                "lastname": "Smith",
-                "email": "jane.smith@example.com"
+              "schema": {
+                "type": "object",
+                "required": ["firstname", "lastname", "email"],
+                "properties": {
+                  "firstname": {"type": "string", "example": "Jane"},
+                  "lastname": {"type": "string", "example": "Smith"},
+                  "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"}
+                }
               }
             }
           }
@@ -147,12 +226,21 @@
             "description": "Member created",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Member"}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
+                    "firstname": {"type": "string", "example": "Jane"},
+                    "lastname": {"type": "string", "example": "Smith"},
+                    "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
+                    "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                  }
+                }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/ValidationError"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {"$ref": "#/components/responses/400Validation"},
+          "401": {"$ref": "#/components/responses/401Unauthorized"}
         }
       },
       "get": {
@@ -165,7 +253,16 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {"$ref": "#/components/schemas/Member"}
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
+                      "firstname": {"type": "string", "example": "Jane"},
+                      "lastname": {"type": "string", "example": "Smith"},
+                      "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
+                      "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                    }
+                  }
                 }
               }
             }
@@ -174,7 +271,18 @@
       }
     },
     "/members/{id}": {
-      "parameters": [{"$ref": "#/components/parameters/ResourceId"}],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "507f191e810c19729de860eb"
+          },
+          "description": "MongoDB ObjectID"
+        }
+      ],
       "get": {
         "tags": ["Members"],
         "summary": "Get member details",
@@ -183,11 +291,20 @@
             "description": "Member details",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Member"}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
+                    "firstname": {"type": "string", "example": "Jane"},
+                    "lastname": {"type": "string", "example": "Smith"},
+                    "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
+                    "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                  }
+                }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"}
+          "404": {"$ref": "#/components/responses/404NotFound"}
         }
       },
       "put": {
@@ -198,11 +315,13 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/Member"},
-              "example": {
-                "firstname": "Jane",
-                "lastname": "Smith",
-                "email": "jane.newemail@example.com"
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstname": {"type": "string", "example": "Jane"},
+                  "lastname": {"type": "string", "example": "Smith"},
+                  "email": {"type": "string", "format": "email", "example": "jane.newemail@example.com"}
+                }
               }
             }
           }
@@ -212,12 +331,21 @@
             "description": "Member updated",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Member"}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
+                    "firstname": {"type": "string", "example": "Jane"},
+                    "lastname": {"type": "string", "example": "Smith"},
+                    "email": {"type": "string", "format": "email", "example": "jane.newemail@example.com"},
+                    "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                  }
+                }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/ValidationError"},
-          "404": {"$ref": "#/components/responses/NotFound"}
+          "400": {"$ref": "#/components/responses/400Validation"},
+          "404": {"$ref": "#/components/responses/404NotFound"}
         }
       },
       "delete": {
@@ -225,146 +353,84 @@
         "summary": "Remove member",
         "security": [{"sessionAuth": []}],
         "responses": {
-          "200": {"$ref": "#/components/responses/DeleteSuccess"},
-          "404": {"$ref": "#/components/responses/NotFound"}
+          "200": {
+            "description": "Member deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/404NotFound"}
         }
       }
     }
   },
   "components": {
-    "schemas": {
-      "Book": {
-        "type": "object",
-        "required": ["title", "author", "ISBN"],
-        "properties": {
-          "_id": {
-            "type": "string",
-            "readOnly": true,
-            "pattern": "^[0-9a-fA-F]{24}$",
-            "example": "507f1f77bcf86cd799439011"
-          },
-          "title": {"type": "string", "example": "To Kill a Mockingbird"},
-          "author": {"type": "string", "example": "Harper Lee"},
-          "ISBN": {"type": "string", "example": "9780061120084"},
-          "genre": {"type": "string", "example": "Fiction"},
-          "publicationYear": {"type": "integer", "example": 1960},
-          "pageCount": {"type": "integer", "example": 336},
-          "availability": {"type": "boolean", "example": true}
-        }
-      },
-      "Member": {
-        "type": "object",
-        "required": ["firstname", "lastname", "email"],
-        "properties": {
-          "_id": {
-            "type": "string",
-            "readOnly": true,
-            "pattern": "^[0-9a-fA-F]{24}$",
-            "example": "507f191e810c19729de860eb"
-          },
-          "firstname": {"type": "string", "example": "Jane"},
-          "lastname": {"type": "string", "example": "Smith"},
-          "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
-          "membershipDate": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "example": "2023-10-15T08:30:00.000Z"
-          }
-        }
-      }
-    },
-    "parameters": {
-      "ResourceId": {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "pattern": "^[0-9a-fA-F]{24}$",
-          "example": "507f1f77bcf86cd799439011"
-        },
-        "description": "MongoDB ObjectID"
+    "securitySchemes": {
+      "sessionAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "connect.sid"
       }
     },
     "responses": {
-      "Unauthorized": {
+      "400Validation": {
+        "description": "Validation error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {"type": "string", "example": "Validation Error"},
+                "message": {"type": "string", "example": "Invalid request data"},
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {"type": "string", "example": "title"},
+                      "message": {"type": "string", "example": "Title is required"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401Unauthorized": {
         "description": "Authentication required",
         "content": {
           "application/json": {
             "schema": {
               "type": "object",
               "properties": {
-                "message": {"type": "string"}
+                "error": {"type": "string", "example": "Unauthorized"},
+                "message": {"type": "string", "example": "Authentication required"}
               }
-            },
-            "example": {"message": "Unauthorized - Please login first"}
-          }
-        }
-      },
-      "ValidationError": {
-        "description": "Invalid request data",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "errors": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "msg": {"type": "string"},
-                      "param": {"type": "string"}
-                    }
-                  }
-                }
-              }
-            },
-            "example": {
-              "errors": [
-                {"msg": "Email must be valid", "param": "email"},
-                {"msg": "Title is required", "param": "title"}
-              ]
             }
           }
         }
       },
-      "NotFound": {
+      "404NotFound": {
         "description": "Resource not found",
         "content": {
           "application/json": {
             "schema": {
               "type": "object",
               "properties": {
-                "message": {"type": "string"}
+                "error": {"type": "string", "example": "Not Found"},
+                "message": {"type": "string", "example": "Resource not found"}
               }
-            },
-            "example": {"message": "Resource not found"}
+            }
           }
         }
-      },
-      "DeleteSuccess": {
-        "description": "Resource deleted",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {"type": "string"}
-              }
-            },
-            "example": {"message": "Resource deleted successfully"}
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "sessionAuth": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "connect.sid",
-        "description": "Session cookie authentication"
       }
     }
   }
