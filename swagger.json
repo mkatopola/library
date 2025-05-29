@@ -37,7 +37,7 @@
             "description": "Book created",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Book"},
+                "schema": {"$ref": "#/components/schemas/BookResponse"},
                 "example": {
                   "_id": "507f1f77bcf86cd799439011",
                   "title": "To Kill a Mockingbird",
@@ -65,7 +65,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {"$ref": "#/components/schemas/Book"}
+                  "items": {"$ref": "#/components/schemas/BookResponse"}
                 },
                 "example": [
                   {
@@ -102,10 +102,10 @@
         "summary": "Get book details",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/SuccessfulOperation",
             "description": "Book details",
             "content": {
               "application/json": {
+                "schema": {"$ref": "#/components/schemas/BookResponse"},
                 "example": {
                   "_id": "507f1f77bcf86cd799439011",
                   "title": "To Kill a Mockingbird",
@@ -139,9 +139,10 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/SuccessfulOperation",
+            "description": "Book updated",
             "content": {
               "application/json": {
+                "schema": {"$ref": "#/components/schemas/BookResponse"},
                 "example": {
                   "_id": "507f1f77bcf86cd799439011",
                   "title": "To Kill a Mockingbird (Updated)",
@@ -165,14 +166,7 @@
         "security": [{"sessionAuth": []}],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/DeleteSuccess",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Book deleted successfully"
-                }
-              }
-            }
+            "$ref": "#/components/responses/DeleteSuccess"
           },
           "404": {"$ref": "#/components/responses/NotFound"}
         }
@@ -201,7 +195,7 @@
             "description": "Member created",
             "content": {
               "application/json": {
-                "schema": {"$ref": "#/components/schemas/Member"},
+                "schema": {"$ref": "#/components/schemas/MemberResponse"},
                 "example": {
                   "_id": "507f191e810c19729de860eb",
                   "firstname": "Jane",
@@ -226,7 +220,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {"$ref": "#/components/schemas/Member"}
+                  "items": {"$ref": "#/components/schemas/MemberResponse"}
                 },
                 "example": [
                   {
@@ -257,9 +251,10 @@
         "summary": "Get member details",
         "responses": {
           "200": {
-            "$ref": "#/components/responses/SuccessfulOperation",
+            "description": "Member details",
             "content": {
               "application/json": {
+                "schema": {"$ref": "#/components/schemas/MemberResponse"},
                 "example": {
                   "_id": "507f191e810c19729de860eb",
                   "firstname": "Jane",
@@ -290,9 +285,10 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/SuccessfulOperation",
+            "description": "Member updated",
             "content": {
               "application/json": {
+                "schema": {"$ref": "#/components/schemas/MemberResponse"},
                 "example": {
                   "_id": "507f191e810c19729de860eb",
                   "firstname": "Jane",
@@ -313,14 +309,7 @@
         "security": [{"sessionAuth": []}],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/DeleteSuccess",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Member deleted successfully"
-                }
-              }
-            }
+            "$ref": "#/components/responses/DeleteSuccess"
           },
           "404": {"$ref": "#/components/responses/NotFound"}
         }
@@ -342,10 +331,32 @@
           "availability": {"type": "boolean", "example": true}
         }
       },
+      "BookResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
+          "title": {"type": "string", "example": "To Kill a Mockingbird"},
+          "author": {"type": "string", "example": "Harper Lee"},
+          "ISBN": {"type": "string", "example": "9780061120084"},
+          "genre": {"type": "string", "example": "Fiction"},
+          "publicationYear": {"type": "integer", "example": 1960},
+          "pageCount": {"type": "integer", "example": 336},
+          "availability": {"type": "boolean", "example": true}
+        }
+      },
       "Member": {
         "type": "object",
         "required": ["firstname", "lastname", "email"],
         "properties": {
+          "firstname": {"type": "string", "example": "Jane"},
+          "lastname": {"type": "string", "example": "Smith"},
+          "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"}
+        }
+      },
+      "MemberResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
           "firstname": {"type": "string", "example": "Jane"},
           "lastname": {"type": "string", "example": "Smith"},
           "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
@@ -371,9 +382,9 @@
               "type": "object",
               "properties": {
                 "message": {"type": "string"}
-              },
-              "example": {"message": "Unauthorized - Please login first"}
-            }
+              }
+            },
+            "example": {"message": "Unauthorized - Please login first"}
           }
         }
       },
@@ -436,19 +447,6 @@
               }
             },
             "example": {"message": "Book deleted successfully"}
-          }
-        }
-      },
-      "SuccessfulOperation": {
-        "description": "Operation completed",
-        "content": {
-          "application/json": {
-            "schema": {
-              "oneOf": [
-                {"$ref": "#/components/schemas/Book"},
-                {"$ref": "#/components/schemas/Member"}
-              ]
-            }
           }
         }
       }
