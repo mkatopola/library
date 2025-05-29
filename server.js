@@ -35,10 +35,10 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
       collectionName: "sessions",
-      ttl: 60 * 60 // 1 hour - cleanup expired sessions
+      ttl: 24 * 60 * 60 // 24 hours session expiration
     }),
     cookie: {
-      maxAge: null, //(cookie will be deleted when the browser is closed)
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours cookie expiration
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       httpOnly: true
