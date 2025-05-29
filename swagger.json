@@ -44,20 +44,53 @@
                   "type": "object",
                   "properties": {
                     "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
-                    "title": {"type": "string", "example": "To Kill a Mockingbird"},
-                    "author": {"type": "string", "example": "Harper Lee"},
-                    "ISBN": {"type": "string", "example": "9780061120084"},
-                    "genre": {"type": "string", "example": "Fiction"},
-                    "publicationYear": {"type": "integer", "example": 1960},
-                    "pageCount": {"type": "integer", "example": 336},
-                    "availability": {"type": "boolean", "example": true}
+                    "title": {"type": "string"},
+                    "author": {"type": "string"},
+                    "ISBN": {"type": "string"},
+                    "genre": {"type": "string"},
+                    "publicationYear": {"type": "integer"},
+                    "pageCount": {"type": "integer"},
+                    "availability": {"type": "boolean"}
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/400Validation"},
-          "401": {"$ref": "#/components/responses/401Unauthorized"}
+          "400": {
+            "description": "Invalid book data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "msg": {"type": "string"},
+                          "param": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Book creation requires authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "get": {
@@ -73,14 +106,14 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
-                      "title": {"type": "string", "example": "To Kill a Mockingbird"},
-                      "author": {"type": "string", "example": "Harper Lee"},
-                      "ISBN": {"type": "string", "example": "9780061120084"},
-                      "genre": {"type": "string", "example": "Fiction"},
-                      "publicationYear": {"type": "integer", "example": 1960},
-                      "pageCount": {"type": "integer", "example": 336},
-                      "availability": {"type": "boolean", "example": true}
+                      "_id": {"type": "string"},
+                      "title": {"type": "string"},
+                      "author": {"type": "string"},
+                      "ISBN": {"type": "string"},
+                      "genre": {"type": "string"},
+                      "publicationYear": {"type": "integer"},
+                      "pageCount": {"type": "integer"},
+                      "availability": {"type": "boolean"}
                     }
                   }
                 }
@@ -114,20 +147,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
-                    "title": {"type": "string", "example": "To Kill a Mockingbird"},
-                    "author": {"type": "string", "example": "Harper Lee"},
-                    "ISBN": {"type": "string", "example": "9780061120084"},
-                    "genre": {"type": "string", "example": "Fiction"},
-                    "publicationYear": {"type": "integer", "example": 1960},
-                    "pageCount": {"type": "integer", "example": 336},
-                    "availability": {"type": "boolean", "example": true}
+                    "_id": {"type": "string"},
+                    "title": {"type": "string"},
+                    "author": {"type": "string"},
+                    "ISBN": {"type": "string"},
+                    "genre": {"type": "string"},
+                    "publicationYear": {"type": "integer"},
+                    "pageCount": {"type": "integer"},
+                    "availability": {"type": "boolean"}
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/404NotFound"}
+          "404": {
+            "description": "Book not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "put": {
@@ -141,13 +186,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {"type": "string", "example": "To Kill a Mockingbird (Updated)"},
-                  "author": {"type": "string", "example": "Harper Lee"},
-                  "ISBN": {"type": "string", "example": "9780061120084"},
-                  "genre": {"type": "string", "example": "Classic Fiction"},
-                  "publicationYear": {"type": "integer", "example": 1960},
-                  "pageCount": {"type": "integer", "example": 336},
-                  "availability": {"type": "boolean", "example": false}
+                  "title": {"type": "string"},
+                  "author": {"type": "string"},
+                  "ISBN": {"type": "string"},
+                  "genre": {"type": "string"},
+                  "publicationYear": {"type": "integer"},
+                  "pageCount": {"type": "integer"},
+                  "availability": {"type": "boolean"}
                 }
               }
             }
@@ -161,21 +206,54 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {"type": "string", "example": "507f1f77bcf86cd799439011"},
-                    "title": {"type": "string", "example": "To Kill a Mockingbird (Updated)"},
-                    "author": {"type": "string", "example": "Harper Lee"},
-                    "ISBN": {"type": "string", "example": "9780061120084"},
-                    "genre": {"type": "string", "example": "Fiction"},
-                    "publicationYear": {"type": "integer", "example": 1960},
-                    "pageCount": {"type": "integer", "example": 336},
-                    "availability": {"type": "boolean", "example": false}
+                    "_id": {"type": "string"},
+                    "title": {"type": "string"},
+                    "author": {"type": "string"},
+                    "ISBN": {"type": "string"},
+                    "genre": {"type": "string"},
+                    "publicationYear": {"type": "integer"},
+                    "pageCount": {"type": "integer"},
+                    "availability": {"type": "boolean"}
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/400Validation"},
-          "404": {"$ref": "#/components/responses/404NotFound"}
+          "400": {
+            "description": "Invalid book update data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "msg": {"type": "string"},
+                          "param": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "delete": {
@@ -196,7 +274,19 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/404NotFound"}
+          "404": {
+            "description": "Book not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -229,18 +319,51 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
-                    "firstname": {"type": "string", "example": "Jane"},
-                    "lastname": {"type": "string", "example": "Smith"},
-                    "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
-                    "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                    "_id": {"type": "string"},
+                    "firstname": {"type": "string"},
+                    "lastname": {"type": "string"},
+                    "email": {"type": "string"},
+                    "membershipDate": {"type": "string", "format": "date-time"}
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/400Validation"},
-          "401": {"$ref": "#/components/responses/401Unauthorized"}
+          "400": {
+            "description": "Invalid member data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "msg": {"type": "string"},
+                          "param": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Member creation requires authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "get": {
@@ -256,11 +379,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
-                      "firstname": {"type": "string", "example": "Jane"},
-                      "lastname": {"type": "string", "example": "Smith"},
-                      "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
-                      "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                      "_id": {"type": "string"},
+                      "firstname": {"type": "string"},
+                      "lastname": {"type": "string"},
+                      "email": {"type": "string"},
+                      "membershipDate": {"type": "string", "format": "date-time"}
                     }
                   }
                 }
@@ -294,17 +417,29 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
-                    "firstname": {"type": "string", "example": "Jane"},
-                    "lastname": {"type": "string", "example": "Smith"},
-                    "email": {"type": "string", "format": "email", "example": "jane.smith@example.com"},
-                    "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                    "_id": {"type": "string"},
+                    "firstname": {"type": "string"},
+                    "lastname": {"type": "string"},
+                    "email": {"type": "string"},
+                    "membershipDate": {"type": "string", "format": "date-time"}
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/404NotFound"}
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "put": {
@@ -318,9 +453,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "firstname": {"type": "string", "example": "Jane"},
-                  "lastname": {"type": "string", "example": "Smith"},
-                  "email": {"type": "string", "format": "email", "example": "jane.newemail@example.com"}
+                  "firstname": {"type": "string"},
+                  "lastname": {"type": "string"},
+                  "email": {"type": "string"}
                 }
               }
             }
@@ -334,18 +469,51 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {"type": "string", "example": "507f191e810c19729de860eb"},
-                    "firstname": {"type": "string", "example": "Jane"},
-                    "lastname": {"type": "string", "example": "Smith"},
-                    "email": {"type": "string", "format": "email", "example": "jane.newemail@example.com"},
-                    "membershipDate": {"type": "string", "format": "date-time", "example": "2023-10-15T08:30:00.000Z"}
+                    "_id": {"type": "string"},
+                    "firstname": {"type": "string"},
+                    "lastname": {"type": "string"},
+                    "email": {"type": "string"},
+                    "membershipDate": {"type": "string", "format": "date-time"}
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/400Validation"},
-          "404": {"$ref": "#/components/responses/404NotFound"}
+          "400": {
+            "description": "Invalid member update data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "msg": {"type": "string"},
+                          "param": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "delete": {
@@ -366,7 +534,19 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/404NotFound"}
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -377,60 +557,6 @@
         "type": "apiKey",
         "in": "cookie",
         "name": "connect.sid"
-      }
-    },
-    "responses": {
-      "400Validation": {
-        "description": "Validation error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {"type": "string", "example": "Validation Error"},
-                "message": {"type": "string", "example": "Invalid request data"},
-                "errors": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "field": {"type": "string", "example": "title"},
-                      "message": {"type": "string", "example": "Title is required"}
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "401Unauthorized": {
-        "description": "Authentication required",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {"type": "string", "example": "Unauthorized"},
-                "message": {"type": "string", "example": "Authentication required"}
-              }
-            }
-          }
-        }
-      },
-      "404NotFound": {
-        "description": "Resource not found",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {"type": "string", "example": "Not Found"},
-                "message": {"type": "string", "example": "Resource not found"}
-              }
-            }
-          }
-        }
       }
     }
   }
