@@ -1,18 +1,17 @@
 exports.ensureAuth = (req, res, next) => {
-  if (req.isAuthenticated() && req.user) {
+  if (req.isAuthenticated()) {
     return next();
   }
-
-  // Clear invalid session cookie
-  res.clearCookie("connect.sid", {
-    path: "/",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production"
-  });
-
-  return res.status(401).json({
-    success: false,
-    message: "Unauthorized - Please log in first",
-    documentation: "/api-docs"
-  });
+  
+  // For API routes, return JSON error
+  if (req.path.startsWith('/api') || req.accepts('json')) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized - Please log in first",
+      login: "/login"
+    });
+  }
+  
+  // For browser requests, redirect to login
+  res.redirect('/login');
 };

@@ -51,48 +51,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 initializePassport(passport);
 
-// Session validation middleware
-app.use((req, res, next) => {
-  // Allow GET requests and authentication flow without validation
-  if (
-    req.method === "GET" ||
-    req.path === "/login" ||
-    req.path === "/github/callback" ||
-    req.path === "/api-docs"
-  ) {
-    return next();
-  }
-
-  // Validate session for write operations (POST/PUT/DELETE)
-  if (req.sessionID) {
-    req.sessionStore.get(req.sessionID, (err, session) => {
-      if (err || !session) {
-        res.clearCookie("library.sid");
-        return res.status(401).json({
-          success: false,
-          message: "Session expired - Please log in"
-        });
-      }
-
-      if (!session.passport?.user) {
-        res.clearCookie("library.sid");
-        return res.status(401).json({
-          success: false,
-          message: "Invalid session - Please reauthenticate"
-        });
-      }
-
-      req.session.touch();
-      next();
-    });
-  } else {
-    res.status(401).json({
-      success: false,
-      message: "Authentication required for this operation"
-    });
-  }
-});
-
 // Routes
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/", require("./routes/auth"));
