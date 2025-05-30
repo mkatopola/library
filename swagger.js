@@ -1,8 +1,7 @@
 const swaggerAutogen = require("swagger-autogen")();
 
 const outputFile = "./swagger.json";
-const endpointsFiles = ["./routes/books.js", "./routes/members.js"]; // Changed from users.js to members.js
-
+const endpointsFiles = ["./routes/books.js", "./routes/members.js"]; 
 const doc = {
   openapi: "3.0.0",
   info: {
@@ -42,7 +41,6 @@ const doc = {
         required: ["title", "author", "ISBN"]
       },
       Member: {
-        // Changed from User to Member
         type: "object",
         properties: {
           firstname: { type: "string", example: "John" },

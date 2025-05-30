@@ -1,6 +1,5 @@
 const { body, validationResult } = require("express-validator");
 
-// middleware/validate.js
 exports.validateBook = [
   body("title").trim().notEmpty().withMessage("Title is required"),
 
