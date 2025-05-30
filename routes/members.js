@@ -5,7 +5,7 @@ const { validateMember } = require("../middleware/validate");
 const { ensureAuth } = require("../middleware/auth");
 
 // CREATE Member with duplicate checking
-router.post("/", validateMember, async (req, res, next) => {
+router.post("/", ensureAuth, validateMember, async (req, res, next) => {
   try {
     const { email } = req.body;
 

@@ -13,6 +13,9 @@ const initializePassport = require("./config/auth");
 // Create an Express application
 const app = express();
 
+// Trust proxy headers for secure cookies in production
+app.set("trust proxy", 1); // Trust first proxy for secure cookies
+
 // Connect to MongoDB
 connectDB();
 
@@ -23,7 +26,9 @@ app.use(helmet());
 app.use(cors({
   origin: process.env.CORS_ORIGIN || "https://cse341-library-api.onrender.com",
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"]
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["set-cookie"]
 }));
 
 // Body parser middleware
@@ -34,7 +39,7 @@ app.use(
   session({
     name: "connect.sid",
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
@@ -44,7 +49,7 @@ app.use(
     cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 24 hours cookie expiration
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true
     }
   })
