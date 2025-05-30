@@ -5,12 +5,15 @@ const passport = require("passport");
 // Authentication routes
 router.get("/login", passport.authenticate("github"));
 
-router.get(
-  "/github/callback",
+router.get("/github/callback", 
   passport.authenticate("github", {
     failureRedirect: "/login",
     successRedirect: "/api-docs"
-  })
+  }),
+  (req, res) => {
+    // Ensure session is properly established
+    res.redirect("/api-docs");
+  }
 );
 
 router.get("/logout", async (req, res) => {
