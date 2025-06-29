@@ -74,7 +74,7 @@ const doc = {
 // Add route specific security overrides
 doc.paths = {
   "/books": {
-    get: { security: [] } // Public access
+    get: { security: [] } // Public access //
   },
   "/books/{id}": {
     get: { security: [] } // Public access
